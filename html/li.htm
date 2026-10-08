@@ -1,0 +1,337 @@
+<html><head>
+<title>Your Videos On GoAnimate</title>
+    <link rel="stylesheet" type="text/css" href="/html/css/common_combined.css.gz.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700">
+<link rel="stylesheet" href="/html/css/cc.css.gz.css">
+<link rel="stylesheet" href="/html/css/list.css">
+<script href="/html/js/common_combined.js.gz.js"></script>
+</head>
+<body><nav class="navbar site-nav" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+            <a class="site-logo" href="html/list.html" title="GoAnimate">
+			<img alt="Make a Video Online with GoAnimate.com" src="http://web.archive.org/web/20150423112540im_/http://lightspeed.goanimate.com/static/477/go/img/business_video/home/logo.png">
+            </a>
+        </div>
+
+        <ul class="nav site-nav-alert-nav hidden-xs">
+            <li>
+                <a href="/notifications" title="Notifications"><span class="glyph-pro glyph-bell"></span></a>
+            </li>
+        </ul>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a class="dropdown-toggle" href="#" data-toggle="dropdown">Your Account <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/student">Dashboard</a></li>
+                        <li><a href="/dashboard/videos">Your Videos</a></li>
+                        <li class="divider"></li>
+                        <li><a href="/account">Account Settings</a></li>
+                        <li><a href="/profile/you">Your Profile</a></li>
+                        <li class="divider"></li>
+                        <li><a class="logout-link" href="/logoff">Logout</a></li>
+                    </ul>
+                </li><li class="dropdown">
+                    <a class="dropdown-toggle" href="#" data-toggle="dropdown">Explore <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/students">Students</a></li>
+                        <li><a href="/teachers">Teachers</a></li>
+                        <li><a href="/videos">Videos</a></li>
+                        <li><a href="/public_faq">FAQ</a></li>
+                    </ul>
+                </li>
+                <li>
+				<a class="hidden-sm hidden-md hidden-lg" href="html/videomaker.html">Make a Video</a>
+				<span class="site-nav-btn hidden-xs"><a class="btn btn-orange" href="html/videomaker.html">Make a Video</a></span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+	<table>
+		<thead>
+			<tr>
+				<td></td>
+				<td>Video Title</td>
+				<td>Last Modified</td>
+				<td></td>
+			</tr>
+		</thead>
+		<tbody></tbody>
+		<tfoot>
+			<tr>
+				<td colspan="127"><a id="load_more" href="javascript:;">LOAD MORE...</a></td>
+			</tr>
+		</tfoot>
+	</table>
+	<form enctype='multipart/form-data' action='/upload_movie' method='post'>
+		<input id='file' type="file" onchange="this.form.submit()" name='import' accept=".xml" />
+	</form>
+	<script>
+		var json;
+		var tbody = document.getElementsByTagName('tbody')[0];
+		var loadMore = document.getElementById('load_more');
+		const listReq = new XMLHttpRequest();
+		listReq.open('GET', '/movieList');
+		listReq.send();
+
+		var C = 0;
+		function loadRows() {
+			let c = C; C += 69;
+			for (; c < C; c++) {
+				if (c > json.length - 1) {
+					loadMore.remove();
+					break;
+				}
+
+				const tbl = json[c];
+				const date = tbl.date.substr(0, 10) + ' ' + tbl.date.substr(11);
+				tbody.insertAdjacentHTML('beforeend',
+					'<tr><td><img src="/movie_thumbs/' + tbl.id + '.png"></td><td><div>' + tbl.title.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;") + '</div><div>' + tbl.durationString + '</div></div></td><td><span>' + date + '</span></td><td><a href="/player?movieId=' + tbl.id + '"></a><a href="/go_full?movieId=' + tbl.id + '"></a><a href="/movies/' + tbl.id + '.xml" download="' + tbl.title + '"></a></td></tr>');
+			}
+		}
+
+		loadMore.onclick = loadRows;
+		listReq.onreadystatechange = function (e) {
+			if (listReq.readyState != 4) return;
+			json = JSON.parse(listReq.responseText);
+			loadRows();
+		}
+
+		function popup(id) {
+			window.open('/player?movieId=' + id, 'MsgWindow', 'width=1280,height=723,left=' + (screen.width / 2 - 640) + ',top=' + (screen.height / 2 - 360));
+		}
+	</script>	
+<style>		table {
+			width: 100%;
+			max-width: 100%;
+			margin-bottom: 127px;
+			margin-right: auto;
+			margin-left: auto;
+			margin-top: 70px;
+			background-color: transparent;
+			border-collapse: collapse;
+			border-spacing: 0;
+			font-size: 14px;
+		}
+
+		@media(min-width: 768px) {
+			table {
+				width: 750px;
+			}
+
+			tr>:nth-child(2)>* {
+				width: 350px;
+			}
+		}
+
+		@media(min-width: 992px) {
+			table {
+				width: 970px;
+			}
+
+			tr>:nth-child(2)>* {
+				width: 580px;
+			}
+		}
+
+		@media (min-width: 1030px) {
+			header>:nth-child(1) {
+				padding-bottom: 0;
+				height: 44px;
+			}
+
+			header>:nth-child(1)>:nth-child(2) {
+				clear: none;
+				float: right;
+			}
+		}
+
+		@media(min-width: 1200px) {
+			table {
+				width: 1170px;
+			}
+
+			tr>:nth-child(2)>* {
+				width: 780px;
+			}
+		}
+
+		thead {
+			font-weight: 200;
+		}
+
+		td {
+			padding: 8px;
+			vertical-align: middle;
+			line-height: 1.42857143;
+		}
+
+		thead {
+			border-bottom: 2px solid #ddd;
+			border-top: 1px solid #ddd;
+		}
+
+		tbody>tr {
+			border-top: 0;
+			border-bottom: 1px solid #ddd;
+		}
+
+		tbody>tr:hover {
+			background-color: #f5f5f5;
+		}
+
+		tr>:nth-child(1) {
+			width: 64px;
+		}
+
+		tr>:nth-child(1)>img {
+			height: 36px;
+		}
+
+		tr>:nth-child(1) {
+			word-break: break-word;
+		}
+
+		tr>:nth-child(2) {
+			color: #999;
+		}
+
+		tr>:nth-child(2)>:nth-child(1) {
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+
+		tr>:nth-child(2)>:nth-child(2) {
+			font-family: monospace;
+		}
+
+		tr>:nth-child(3) {
+			width: 200px;
+		}
+
+		tr>:nth-child(3)>* {
+			font-family: monospace;
+			display: inline-block;
+			text-align: center;
+			font-size: 14px;
+		}
+
+		tr>:nth-child(4) {
+			font-family: 'GlyphiconsRegular';
+			text-decoration: none;
+			padding-top: 5px;
+			font-size: 14px;
+			width: 80px;
+		}
+
+		tr>:nth-child(4)>a {
+			display: inline-block;
+			text-decoration: none;
+			padding-right: 10px;
+			color: #474747;
+		}
+
+		tr>:nth-child(4)>a:hover {
+			color: #d85e27;
+		}
+
+		tr>:nth-child(4)>:nth-child(1)::before {
+			content: '\E174';
+		}
+
+		tr>:nth-child(4)>:nth-child(2)::before {
+			content: '\E235';
+		}
+
+		tr>:nth-child(4)>:nth-child(3)::before {
+			content: '\E182';
+		}
+
+		tfoot>tr>td {
+			text-align: center;
+			border: none;
+		}
+
+		tfoot>tr>td>a {
+			text-decoration: none;
+			color: #474747;
+			font-size: 14px;
+		}</style>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><div class="site-footer">
+    <div class="container">
+        <div class="site-footer-nav row">
+            <div class="col-sm-3">
+                <div class="site-footer-nav-col">
+                    <h4><span>About GoAnimate</span></h4>
+                    <ul class="list-unstyled">
+                        <li><a href="http://web.archive.org/web/20180307222818/https://goanimate.com/about">Who we are</a></li>
+                        <li><a href="http://web.archive.org/web/20180307222818/https://resources.goanimate.com/careers/">Careers</a></li>
+                        <li><a href="http://web.archive.org/web/20180307222818/https://goanimate.com/contactus">Contact Us</a></li>
+                        <li><a href="http://web.archive.org/web/20180307222818/https://blog.goanimate.com/">Blog</a></li>
+                        <li><a href="http://web.archive.org/web/20180307222818/https://press.goanimate.com/">Press</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="site-footer-nav-col">
+                    <h4><span>GoAnimate Solutions</span></h4>
+                    <ul class="list-unstyled">
+                        <li><a href="http://web.archive.org/web/20180307222818/https://goanimate.com/business/videoplans?hook=footer_button.site">Plans and Pricing</a></li>
+                        <li><a href="http://web.archive.org/web/20180307222818/https://goanimate.com/business/videoplans/federal?hook=footer_button.site">Plans for Federal Agencies</a></li>
+                        <li><a href="http://web.archive.org/web/20180307222818/https://goanimate4schools.com/" target="_blank">GoAnimate for Schools</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="site-footer-nav-col">
+                    <h4><span>Usage Guidelines</span></h4>
+                    <ul class="list-unstyled">
+                        <li><a href="http://web.archive.org/web/20180307222818/https://goanimate.com/termsofuse">Terms of Service</a></li>
+                        <li><a href="http://web.archive.org/web/20180307222818/https://goanimate.com/privacy">Privacy Policy</a></li>
+                        <li><a href="//web.archive.org/web/20180307222818/https://support.goanimate.com/hc/en-us/articles/202408574" target="_blank">Cancellation Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="site-footer-nav-col">
+                    <h4>Getting Help</h4>
+                    <ul class="list-unstyled">
+                        <li><a href="http://web.archive.org/web/20180307222818/https://resources.goanimate.com/">Resources</a></li>
+                        <li><a href="http://web.archive.org/web/20180307222818/https://support.goanimate.com/">Help Center</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="site-footer-socials-container">
+                    Follow us on:
+                    <ul class="site-footer-socials">
+                        <li><a class="glyph-social glyph-facebook" href="http://web.archive.org/web/20180307222818/https://www.facebook.com/GoAnimateInc"><span class="sr-only">Facebook</span></a></li>
+                        <li><a class="glyph-social glyph-twitter" href="http://web.archive.org/web/20180307222818/https://twitter.com/GoAnimate"><span class="sr-only">Twitter</span></a></li>
+                        <li><a class="glyph-social glyph-linked-in" href="http://web.archive.org/web/20180307222818/https://www.linkedin.com/company/goanimate"><span class="sr-only">LinkedIn</span></a></li>
+                        <li><a class="glyph-social glyph-google-plus" href="http://web.archive.org/web/20180307222818/https://plus.google.com/+goanimate"><span class="sr-only">Google+</span></a></li>
+                        <li><a class="glyph-social glyph-youtube" href="http://web.archive.org/web/20180307222818/https://www.youtube.com/user/GoAnimate"><span class="sr-only">YouTube</span></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="site-footer-copyright">
+                    <img src="http://web.archive.org/web/20180307222818im_/https://d3v4eglovri8yt.cloudfront.net/static/f789d2b2551c1fb6/go/img/footer/logo_amazon.png" alt="AWS Partner Network">
+                    &nbsp;&nbsp;&nbsp;
+                    <div class="ga-copy">GoAnimate © 2024</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body></html>
